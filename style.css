@@ -1,0 +1,134 @@
+/* reset */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+* {
+	margin: 0;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+	display: block;
+	max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
+}
+
+button {
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	overflow-wrap: break-word;
+}
+
+p {
+	text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	text-wrap: balance;
+}
+/* end of reset */
+
+/* variables */
+:root {
+	font-size: 16px;
+
+	/* responsive font sizes */
+	--f-s: clamp(0.95rem, 0.25vw + 0.85rem, 1rem);
+	--f-m: clamp(1.1rem, 0.3vw + 1rem, 1.125rem);
+	--f-l: clamp(1.25rem, 0.4vw + 1rem, 1.5rem);
+
+	/* line height */
+	--lh-tight: 1.2;
+	--lh-relaxed: 1.75;
+
+	/* spacing rem */
+	--rem-0-25: 0.25rem;
+	--rem-0-50: 0.5rem;
+	--rem-1: 1rem;
+	--rem-1-25: 1.25rem;
+	--rem-1-50: 1.5rem;
+	--rem-2: 2rem;
+	--rem-3: 3rem;
+	--rem-4: 4rem;
+	--rem-5: 5rem;
+
+	/* contextual spacing */
+	--em-0-25: 0.25em;
+	--em-0-5: 0.5em;
+	--em-1: 1em;
+	--em-1-50: 1.5em;
+	--em-2: 2em;
+
+	/* colors  */
+	--bg-clr-dark: #191a20;
+	--bg-clr-light: #d8d8d8;
+	--border-clr: #3367a3;
+	--hover-clr: #3367a377;
+
+	--text-clr-light: #d8d8d8;
+	--text-clr-dark: #191a20;
+
+	/* UI validation */
+	--success-clr: #0fc975;
+	--focus-clr: #fff697;
+	--error-clr: #ff897e;
+
+	/* shadows */
+	--shadow: 0 0 var(--rem-1);
+}
+
+body {
+	font-family: system-ui, sans-serif;
+	background-color: var(--bg-clr-light);
+	color: var(--text-clr-dark);
+	min-height: 100vh;
+}
+
+/* a11y */
+:focus-visible {
+	outline: 2px solid var(--focus-clr);
+	outline-offset: 2px;
+}
+
+/* utilities */
+.container {
+	width: 80%;
+	max-width: 750px;
+	margin: 0 auto;
+}
