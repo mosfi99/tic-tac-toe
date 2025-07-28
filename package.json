@@ -1,0 +1,26 @@
+{
+	"name": "tic-tac-toe",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build:css": "npx tailwindcss -i ./src/css/app.css -o ./public/output.css",
+		"watch:css": "npx tailwindcss -i ./src/css/app.css -o ./public/output.css --watch"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/mosfi99/tic-tac-toe.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/mosfi99/tic-tac-toe/issues"
+	},
+	"homepage": "https://github.com/mosfi99/tic-tac-toe#readme",
+	"dependencies": {
+		"@tailwindcss/cli": "^4.1.11",
+		"daisyui": "^5.0.48",
+		"tailwindcss": "^4.1.11"
+	}
+}

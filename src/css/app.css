@@ -1,0 +1,10 @@
+@import 'tailwindcss';
+@source "./src/*.{html,js}";
+@plugin "daisyui" {
+	themes: light --default, dark --prefersdark, halloween;
+}
+
+/* https://github.com/saadeghi/daisyui/issues/3040 */
+html {
+	scrollbar-gutter: auto !important;
+}
