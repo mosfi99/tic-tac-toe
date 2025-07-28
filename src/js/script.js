@@ -151,4 +151,25 @@ const Game = (function (player1, player2) {
 
 	return { playRound };
 })('player 1', 'player 2');
-// TODO: up here store the names of the players that you will get from the DOM. Make some logic that if the player chose 'X' it will be denominated as player 1.
+// TODO: up here store the names of the players from the DOM.
+
+// DOM
+const modeTwoPlayers = document.querySelector('#mode__twoPlayers');
+const modeVsComputer = document.querySelector('#mode__vsComputer');
+
+const dialogTwoPlayers = document.querySelector('#dialog__twoPlayers');
+
+const dialogVsComputer = document.querySelector('#dialog__vsComputer');
+
+// Events
+// open form for 2 players mode
+modeTwoPlayers.addEventListener('click', () => {
+	dialogTwoPlayers.showModal();
+});
+
+// TODO: finish form for 2 players, and vs computer
+
+// For both forms, click on start will:
+//  1) delete the game mode card
+//  2) close the modal
+//  3) create the board grid
