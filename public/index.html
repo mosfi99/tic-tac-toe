@@ -14,8 +14,9 @@
 
 		<main class="container mx-auto px-10">
 			<!-- GAME MODE CARD -->
-			<div
-				class="card bg-neutral-content/10 text-neutral-content w-70 sm:w-105 mx-auto my-10">
+			<section
+				id="card__gameMode"
+				class="card bg-neutral-content/10 text-neutral-content mx-auto my-10 w-60 sm:w-105">
 				<div class="card-body items-center text-center">
 					<h2 class="card-title text-2xl mb-1.5">Game Mode</h2>
 					<div class="card-actions justify-center">
@@ -27,7 +28,7 @@
 						</button>
 					</div>
 				</div>
-			</div>
+			</section>
 
 			<!-- MODAL TWO PLAYERS -->
 			<dialog
@@ -41,11 +42,12 @@
 						</button>
 					</form>
 
-					<form class="space-y-4 flex flex-col items-center">
-						<!--  TODO: prevent default form submission on .js -->
+					<form
+						id="form__twoPlayers"
+						class="space-y-4 flex flex-col items-center">
 						<h2 class="font-medium mb-2">Cross plays first</h2>
 						<label class="input w-50">
-							<span class="label">❌</span>
+							<span class="label font-bold text-primary">X</span>
 							<input
 								type="text"
 								name="playerX"
@@ -53,21 +55,60 @@
 								required />
 						</label>
 						<label class="input w-50">
-							<span class="label">⭕️</span>
+							<span class="label font-bold text-secondary">O</span>
 							<input
 								type="text"
 								name="playerO"
 								placeholder="Player's name"
 								required />
 						</label>
-						<button class="btn block btn-accent btn-outline px-10 font-medium">
+						<button
+							type="submit"
+							class="btn block btn-accent btn-outline px-10 font-medium">
 							Start
 						</button>
 					</form>
 				</div>
 			</dialog>
+
 			<!-- MODAL VS COMPUTER -->
-			<!-- TODO: Add modal for "VS Computer" game mode -->
+			<dialog
+				id="dialog__vsComputer"
+				class="modal modal-bottom sm:modal-middle">
+				<div class="modal-box sm:w-2xs">
+					<form method="dialog">
+						<button
+							class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+							✕
+						</button>
+					</form>
+
+					<form
+						id="form__vsComputer"
+						class="space-y-4 flex flex-col items-center">
+						<h2 class="font-medium mb-2">Cross plays first</h2>
+						<label class="input w-50">
+							<span class="label">Name</span>
+							<input type="text" name="playerX" required />
+						</label>
+
+						<select class="select w-50" required>
+							<option value="" disabled selected>Choose X or O</option>
+							<option class="font-bold text-primary" value="X">X</option>
+							<option class="font-bold text-secondary" value="O">O</option>
+						</select>
+
+						<button
+							type="submit"
+							class="btn block btn-accent btn-outline px-10 font-medium">
+							Start
+						</button>
+					</form>
+				</div>
+			</dialog>
+
+			<!-- BOARD -->
+			<section id="section__board"></section>
 		</main>
 	</body>
 </html>
