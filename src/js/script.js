@@ -168,13 +168,15 @@ const Display = (function () {
 		const domBoard = document.createElement('div');
 
 		domBoard.id = 'board';
-		domBoard.className = `grid grid-cols-3 grid-rows-3 size-60 my-10 sm:size-90 mx-auto`;
+	
+
+		domBoard.className = `grid grid-cols-3 gap-2 max-w-xs sm:max-w-md mx-auto mt-6`;
 
 		// grid creation
 		for (let i = 0; i < BOARD_SIZE * BOARD_SIZE; i++) {
 			const cell = document.createElement('div');
 			cell.dataset.cell = i;
-			cell.className = 'cell flex justify-center items-center border';
+			cell.className = 'cell aspect-square w-full bg-base-200 rounded flex items-center justify-center text-4xl sm:text-6xl cursor-pointer hover:bg-base-300';
 			domBoard.appendChild(cell);
 		}
 		sectionBoard.appendChild(domBoard);
