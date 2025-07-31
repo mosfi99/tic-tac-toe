@@ -12,11 +12,12 @@
 			<h1 class="text-5xl">Tic Tac Toe</h1>
 		</header>
 
-		<main class="container mx-auto px-10">
+		<main class="container mx-auto px-4 sm:px-10">
 			<!-- HOW TO PLAY CARD -->
+
 			<section
 				id="card__gameRules"
-				class="card bg-primary/10 text-neutral-content mx-auto my-10 w-70 sm:w-110">
+				class="card bg-primary/10 text-neutral-content mx-auto my-10 w-full max-w-md sm:max-w-xl">
 				<div class="card-body items-center text-center space-y-4">
 					<h2 class="card-title text-3xl mb-1.5">How to Play</h2>
 					<ul class="list-disc list-inside text-[16px] text-left">
@@ -54,7 +55,6 @@
 					<form
 						id="form__playersNames"
 						class="space-y-4 flex flex-col items-center">
-						<h2 class="font-medium mb-2 text-left">Introduce names</h2>
 						<label class="input w-50">
 							<span class="label font-bold text-primary">X</span>
 							<input
@@ -86,9 +86,10 @@
 
 			<!-- BOARD -->
 			<section id="section__board"></section>
+			<!-- GAME STATUS CARD -->
 			<section id="section__gameStatus" class="hidden">
 				<div
-					class="card bg-neutral-content/10 text-neutral-content mx-auto my-10 w-60 sm:w-105">
+					class="card bg-neutral-content/10 text-neutral-content mx-auto my-10 w-full max-w-md">
 					<div class="card-body items-center text-center">
 						<h2 id="title__gameStatus" class="card-title text-2xl mb-1.5"></h2>
 						<div class="card-actions justify-center">
