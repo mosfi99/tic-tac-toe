@@ -50,21 +50,25 @@
 							<span class="label font-bold text-primary">X</span>
 							<input
 								type="text"
+								id="player__X"
 								name="playerX"
 								placeholder="Player's name"
+								maxlength="10"
 								required />
 						</label>
 						<label class="input w-50">
 							<span class="label font-bold text-secondary">O</span>
 							<input
+								id="player__O"
 								type="text"
 								name="playerO"
 								placeholder="Player's name"
+								maxlength="10"
 								required />
 						</label>
 						<button
 							type="submit"
-							class="btn block btn-accent btn-outline px-10 font-medium">
+							class="btn block btn-accent px-10 font-medium">
 							Start
 						</button>
 					</form>
@@ -100,7 +104,7 @@
 
 						<button
 							type="submit"
-							class="btn block btn-accent btn-outline px-10 font-medium">
+							class="btn block btn-accent px-10 font-medium">
 							Start
 						</button>
 					</form>
@@ -109,6 +113,19 @@
 
 			<!-- BOARD -->
 			<section id="section__board"></section>
+			<section id="section__gameStatus" class="hidden">
+				<div
+					class="card bg-neutral-content/10 text-neutral-content mx-auto my-10 w-60 sm:w-105">
+					<div class="card-body items-center text-center">
+						<h2 id="title__gameStatus" class="card-title text-2xl mb-1.5"></h2>
+						<div class="card-actions justify-center">
+							<button id="btn__playAgain" class="btn btn-accent w-35">
+								Play Again
+							</button>
+						</div>
+					</div>
+				</div>
+			</section>
 		</main>
 	</body>
 </html>
