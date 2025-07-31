@@ -16,7 +16,6 @@ const Gameboard = (function () {
 			}
 		}
 	};
-
 	initEmptyBoard();
 
 	const setMarker = (row, column, marker) => {
@@ -41,9 +40,6 @@ const Player = function (name, marker) {
 };
 
 const initGame = function (nameX, nameO) {
-	const playerX = Player(nameX, 'X');
-	const playerO = Player(nameO, 'O');
-
 	Game = (function (playerX, playerO) {
 		let gameOver = false;
 		let gameStatus;
@@ -51,15 +47,12 @@ const initGame = function (nameX, nameO) {
 		const board = Gameboard.getBoard();
 
 		const players = [playerX, playerO];
-		let currentPlayer = players[0];
+		let currentPlayerIndex = 0;
 		let lastPlayer; // to keep track of who won
 
-		const switchTurn = (player) => {
-			player =
-				player.getName() === players[0].getName() ? players[1] : players[0];
-
-			currentPlayer = player;
-			return currentPlayer;
+		const switchTurn = () => {
+			currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
+			return players[currentPlayerIndex];
 		};
 
 		// check for all winning combinations
@@ -87,20 +80,10 @@ const initGame = function (nameX, nameO) {
 			// 0,0 - 1,1 - 2,2
 			// 0,2 - 1,1 - 2,0
 			if (board[1][1] !== '') {
-				if (
-					board[0][0] !== '' &&
-					board[0][0] === board[1][1] &&
-					board[1][1] === board[2][2]
-				) {
+				if (board[0][0] === board[1][1] && board[1][1] === board[2][2])
 					return true;
-				}
-				if (
-					board[0][2] !== '' &&
-					board[0][2] === board[1][1] &&
-					board[1][1] === board[2][0]
-				) {
+				if (board[0][2] === board[1][1] && board[1][1] === board[2][0])
 					return true;
-				}
 			}
 
 			return false;
@@ -117,11 +100,6 @@ const initGame = function (nameX, nameO) {
 			}
 			return true;
 		};
-
-		// const restartGame = () => {
-		// 	// game logic
-		// 	Gameboard.initEmptyBoard();
-		// };
 
 		const checkGameStatus = () => {
 			if (checkWinner()) {
@@ -141,27 +119,33 @@ const initGame = function (nameX, nameO) {
 			if (gameOver) return; // safe guard, in case the events are not unbinding on time.
 
 			// checks if the player chose an already-filled cell
-			if (Gameboard.setMarker(row, column, currentPlayer.getMarker())) {
+			if (
+				Gameboard.setMarker(
+					row,
+					column,
+					players[currentPlayerIndex].getMarker()
+				)
+			) {
 				// place the marker
 				const index = row * BOARD_SIZE + column;
-				Display.updateCell(index, currentPlayer.getMarker());
-			}
-			lastPlayer = currentPlayer;
+				Display.updateCell(index, players[currentPlayerIndex].getMarker());
+				lastPlayer = players[currentPlayerIndex];
 
-			checkGameStatus();
-			if (gameOver) {
-				Display.unbindCellEvents();
-				Display.showGameStatus();
-				return;
+				checkGameStatus();
+				if (gameOver) {
+					Display.unbindCellEvents();
+					Display.showGameStatus();
+					return;
+				}
+				switchTurn();
 			}
-			switchTurn(currentPlayer);
 		};
 
 		const getLastPlayer = () => lastPlayer;
 		const getGameStatus = () => gameStatus;
 
 		return { playRound, getLastPlayer, getGameStatus };
-	})(Player('playerX', 'X'), Player('playerO', 'O'));
+	})(Player(nameX, 'X'), Player(nameO, 'O'));
 };
 
 // DOM
@@ -206,7 +190,7 @@ const Display = (function () {
 		const cells = document.querySelectorAll('.cell');
 		cells.forEach((cell) => {
 			cell.addEventListener('click', (e) => {
-				const index = parseInt(e.target.dataset.cell);
+				const index = parseInt(e.currentTarget.dataset.cell);
 				const row = Math.floor(index / BOARD_SIZE);
 				const col = index % BOARD_SIZE;
 				Game.playRound(row, col);
@@ -247,8 +231,9 @@ const Display = (function () {
 
 	const playAgain = () => {
 		const board = document.querySelector('#board');
-		Gameboard.initEmptyBoard(); // for game logic board
 		board.remove(); // dom board
+
+		Gameboard.initEmptyBoard(); // for game logic board
 
 		cardGameRules.classList.remove('hidden');
 		sectionGameStatus.classList.add('hidden');
