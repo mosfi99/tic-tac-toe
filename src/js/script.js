@@ -46,13 +46,15 @@ const Player = function (name, marker) {
 };
 
 // Game controller as an IIFE Module to manage the turns, win/tie logic and track current player
-const Game = (function (player1, player2) {
+const Game = (function (playerX, playerO) {
 	let gameOver = false;
+	let gameStatus;
 
 	const board = Gameboard.getBoard();
 
-	const players = [Player(player1, 'X'), Player(player2, 'O')];
+	const players = [playerX, playerO];
 	let currentPlayer = players[0];
+	let lastPlayer; // to keep track of who won
 
 	const switchTurn = (player) => {
 		player =
@@ -104,8 +106,6 @@ const Game = (function (player1, player2) {
 		}
 
 		return false;
-		// TODO: 
-		// get winning combo to be use to highlight the cells
 	};
 
 	// checks if the board has empty spaces, if yes then it is not a tie yet, if no, it is a tie
@@ -126,8 +126,22 @@ const Game = (function (player1, player2) {
 		Gameboard.resetBoard();
 	};
 
+	const checkGameStatus = () => {
+		if (checkWinner()) {
+			gameStatus = 'win';
+			gameOver = true;
+			return;
+		}
+
+		if (checkTie()) {
+			gameStatus = 'tie';
+			gameOver = true;
+			return;
+		}
+	};
+
 	const playRound = (row, column) => {
-		if (gameOver) return;
+		if (gameOver) return; // safe guard, in case the events are not unbinding on time.
 
 		// checks if the player chose an already-filled cell
 		if (Gameboard.setMarker(row, column, currentPlayer.getMarker())) {
@@ -135,35 +149,23 @@ const Game = (function (player1, player2) {
 			const index = row * BOARD_SIZE + column;
 			Display.updateCell(index, currentPlayer.getMarker());
 
+			lastPlayer = currentPlayer;
 			switchTurn(currentPlayer);
 		}
 
-		let winStatus = checkWinner();
-		if (!winStatus) {
-			let tieStatus = checkTie();
-			if (tieStatus) {
-				console.log('tie');
-				gameOver = true;
-				Display.unbindCellEvents();
-				// TODO:
-				// Display.showRestartButton();
-				// now restart button should
-				// restartGame();
-			}
-		} else {
-			console.log('winner');
-			gameOver = true;
+		checkGameStatus();
+		if (gameOver) {
 			Display.unbindCellEvents();
-			// Display.highlightWinningCells(/* winning combo */);
-			// Display.showRestartButton();
-			// now restart button should
-			// restartGame();
+			Display.showGameStatus();
+			// TODO: add a Display.gameOverDisplay function, to hold all these Display.sth funcs, display should only return gameOverDisplay
+			return;
 		}
 	};
+	const getLastPlayer = () => lastPlayer;
+	const getGameStatus = () => gameStatus;
 
-	return { playRound };
-})('player 1', 'player 2');
-// TODO: up here store the names of the players from the DOM.
+	return { playRound, getLastPlayer, getGameStatus };
+})(Player('playerX', 'X'), Player('playerO', 'O'));
 
 // DOM
 const Display = (function () {
@@ -190,7 +192,7 @@ const Display = (function () {
 		const board = document.createElement('div');
 
 		board.id = 'board';
-		board.className = `grid grid-cols-${BOARD_SIZE} grid-rows-${BOARD_SIZE} size-60 my-10 sm:size-90 mx-auto`;
+		board.className = `grid grid-cols-3 grid-rows-3 size-60 my-10 sm:size-90 mx-auto`;
 
 		for (let i = 0; i < BOARD_SIZE * BOARD_SIZE; i++) {
 			const cell = document.createElement('div');
@@ -242,6 +244,37 @@ const Display = (function () {
 		bindCellEvents();
 	};
 
+	// TODO: on playAgain func
+	// - restartGame(); for the game logic.
+	// - Display.clearBoard(); (maybe not cause the board will be generated again?)
+	// - show again gameMode card, which was removed, maybe use hidden for it.
+	// - hide the section Game Status
+	const playAgain = () => {};
+
+	const showGameStatus = () => {
+		const status = Game.getGameStatus();
+		const winnerMarker = Game.getLastPlayer().getMarker();
+		const playerX = document.querySelector('#player__X').value;
+		const playerO = document.querySelector('#player__O').value;
+
+		// DOM
+		const sectionGameStatus = document.querySelector('#section__gameStatus');
+		const titleGameStatus = document.querySelector('#title__gameStatus');
+
+		// styling
+		sectionGameStatus.classList.remove('hidden');
+
+		if (status === 'win') {
+			if (winnerMarker === 'X') {
+				titleGameStatus.textContent = `🎉 ${playerX} wins! 🎉`;
+			} else {
+				titleGameStatus.textContent = `🎉 ${playerO} wins! 🎉`;
+			}
+		} else if (status === 'tie') {
+			titleGameStatus.textContent = `That's a tie!`;
+		}
+	};
+
 	const clearBoard = () => {
 		document
 			.querySelectorAll('.cell')
@@ -249,8 +282,6 @@ const Display = (function () {
 	};
 
 	const bindEvents = () => {
-		// Events
-		// open form for 2 players mode
 		modeTwoPlayers.addEventListener('click', () => {
 			dialogTwoPlayers.showModal();
 		});
@@ -268,7 +299,13 @@ const Display = (function () {
 		});
 	};
 
-	return { updateCell, bindEvents, unbindCellEvents, clearBoard };
+	return {
+		updateCell,
+		bindEvents,
+		unbindCellEvents,
+		showGameStatus,
+		clearBoard,
+	};
 })();
 
 Display.bindEvents();
