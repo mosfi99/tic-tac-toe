@@ -29,12 +29,7 @@ const Gameboard = (function () {
 
 	const getBoard = () => board;
 
-	const resetBoard = function () {
-		initEmptyBoard();
-		return board;
-	};
-
-	return { setMarker, getBoard, resetBoard };
+	return { initEmptyBoard, setMarker, getBoard };
 })();
 
 // store Player information
@@ -123,11 +118,10 @@ const initGame = function (nameX, nameO) {
 			return true;
 		};
 
-		const restartGame = () => {
-			// game logic
-			gameOver = false;
-			Gameboard.resetBoard();
-		};
+		// const restartGame = () => {
+		// 	// game logic
+		// 	Gameboard.initEmptyBoard();
+		// };
 
 		const checkGameStatus = () => {
 			if (checkWinner()) {
@@ -158,7 +152,6 @@ const initGame = function (nameX, nameO) {
 			if (gameOver) {
 				Display.unbindCellEvents();
 				Display.showGameStatus();
-				// TODO: add a Display.gameOverDisplay function, to hold all these Display.sth funcs, display should only return gameOverDisplay
 				return;
 			}
 			switchTurn(currentPlayer);
@@ -173,15 +166,17 @@ const initGame = function (nameX, nameO) {
 
 // DOM
 const Display = (function () {
-	// game mode
-	const cardGameMode = document.querySelector('#card__gameMode');
-	const modeTwoPlayers = document.querySelector('#mode__twoPlayers');
-	// dialogs
-	const dialogTwoPlayers = document.querySelector('#dialog__twoPlayers');
-	// forms
-	const form__twoPlayers = document.querySelector('#form__twoPlayers');
-	// board
-	const cells = document.querySelectorAll('.cell');
+	// how to play card
+	const cardGameRules = document.querySelector('#card__gameRules');
+	const btnGotIt = document.querySelector('#btn__gotIt');
+	// players form
+	const dialogPlayersNames = document.querySelector('#dialog__playersNames');
+	const formPlayersNames = document.querySelector('#form__playersNames');
+	// game status
+	const sectionGameStatus = document.querySelector('#section__gameStatus');
+	const titleGameStatus = document.querySelector('#title__gameStatus');
+	const btnPlayAgain = document.querySelector('#btn__playAgain');
+	// const cells = document.querySelectorAll('.cell');
 
 	// players
 	let nameX, nameO;
@@ -241,7 +236,7 @@ const Display = (function () {
 
 	const startGame = (e, dialog) => {
 		e.preventDefault();
-		cardGameMode.remove();
+		cardGameRules.classList.add('hidden');
 		dialog.close();
 		renderBoard();
 		nameX = document.querySelector('#player__X').value;
@@ -250,20 +245,18 @@ const Display = (function () {
 		bindCellEvents();
 	};
 
-	// TODO: on playAgain func
-	// - restartGame(); for the game logic.
-	// - Display.clearBoard(); (maybe not cause the board will be generated again?)
-	// - show again gameMode card, which was removed, maybe use hidden for it.
-	// - hide the section Game Status
-	const playAgain = () => {};
+	const playAgain = () => {
+		const board = document.querySelector('#board');
+		Gameboard.initEmptyBoard(); // for game logic board
+		board.remove(); // dom board
+
+		cardGameRules.classList.remove('hidden');
+		sectionGameStatus.classList.add('hidden');
+	};
 
 	const showGameStatus = () => {
 		const status = Game.getGameStatus();
 		const winnerMarker = Game.getLastPlayer().getMarker();
-
-		// DOM
-		const sectionGameStatus = document.querySelector('#section__gameStatus');
-		const titleGameStatus = document.querySelector('#title__gameStatus');
 
 		// styling
 		sectionGameStatus.classList.remove('hidden');
@@ -279,19 +272,18 @@ const Display = (function () {
 		}
 	};
 
-	const clearBoard = () => {
-		document
-			.querySelectorAll('.cell')
-			.forEach((cell) => (cell.textContent = ''));
-	};
-
 	const bindEvents = () => {
-		modeTwoPlayers.addEventListener('click', () => {
-			dialogTwoPlayers.showModal();
+		btnGotIt.addEventListener('click', () => {
+			dialogPlayersNames.showModal();
 		});
 
-		form__twoPlayers.addEventListener('submit', (e) => {
-			startGame(e, dialogTwoPlayers);
+		btnPlayAgain.addEventListener('click', () => {
+			playAgain();
+		});
+
+		formPlayersNames.addEventListener('submit', (e) => {
+			startGame(e, dialogPlayersNames);
+			formPlayersNames.reset();
 		});
 	};
 
@@ -300,7 +292,6 @@ const Display = (function () {
 		bindEvents,
 		unbindCellEvents,
 		showGameStatus,
-		clearBoard,
 	};
 })();
 
