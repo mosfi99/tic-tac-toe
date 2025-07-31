@@ -39,14 +39,13 @@ const Player = function (name, marker) {
 	return { getName, getMarker };
 };
 
-const initGame = function (nameX, nameO) {
+const initGame = function (namePlayerX, namePlayerO) {
 	Game = (function (playerX, playerO) {
+		const board = Gameboard.getBoard();
+		const players = [playerX, playerO];
+
 		let gameOver = false;
 		let gameStatus;
-
-		const board = Gameboard.getBoard();
-
-		const players = [playerX, playerO];
 		let currentPlayerIndex = 0;
 		let lastPlayer; // to keep track of who won
 
@@ -118,14 +117,14 @@ const initGame = function (nameX, nameO) {
 		const playRound = (row, column) => {
 			if (gameOver) return; // safe guard, in case the events are not unbinding on time.
 
+			const isMarkerSet = Gameboard.setMarker(
+				row,
+				column,
+				players[currentPlayerIndex].getMarker()
+			);
+
 			// checks if the player chose an already-filled cell
-			if (
-				Gameboard.setMarker(
-					row,
-					column,
-					players[currentPlayerIndex].getMarker()
-				)
-			) {
+			if (isMarkerSet) {
 				// place the marker
 				const index = row * BOARD_SIZE + column;
 				Display.updateCell(index, players[currentPlayerIndex].getMarker());
@@ -145,7 +144,7 @@ const initGame = function (nameX, nameO) {
 		const getGameStatus = () => gameStatus;
 
 		return { playRound, getLastPlayer, getGameStatus };
-	})(Player(nameX, 'X'), Player(nameO, 'O'));
+	})(Player(namePlayerX, 'X'), Player(namePlayerO, 'O'));
 };
 
 // DOM
@@ -160,30 +159,25 @@ const Display = (function () {
 	const sectionGameStatus = document.querySelector('#section__gameStatus');
 	const titleGameStatus = document.querySelector('#title__gameStatus');
 	const btnPlayAgain = document.querySelector('#btn__playAgain');
-	// const cells = document.querySelectorAll('.cell');
 
 	// players
-	let nameX, nameO;
+	let inputNameX, inputNameO;
 
-	// For both forms, click on start btn (type submit) will:
-	//  1) delete the game mode card
-	//  2) close the modal
-	//  3) create the board grid
 	const renderBoard = () => {
 		const sectionBoard = document.querySelector('#section__board');
-		const board = document.createElement('div');
+		const domBoard = document.createElement('div');
 
-		board.id = 'board';
-		board.className = `grid grid-cols-3 grid-rows-3 size-60 my-10 sm:size-90 mx-auto`;
+		domBoard.id = 'board';
+		domBoard.className = `grid grid-cols-3 grid-rows-3 size-60 my-10 sm:size-90 mx-auto`;
 
+		// grid creation
 		for (let i = 0; i < BOARD_SIZE * BOARD_SIZE; i++) {
 			const cell = document.createElement('div');
 			cell.dataset.cell = i;
 			cell.className = 'cell flex justify-center items-center border';
-			board.appendChild(cell);
+			domBoard.appendChild(cell);
 		}
-
-		sectionBoard.appendChild(board);
+		sectionBoard.appendChild(domBoard);
 	};
 
 	const bindCellEvents = () => {
@@ -215,7 +209,7 @@ const Display = (function () {
 			? marker.classList.add('text-primary')
 			: marker.classList.add('text-secondary');
 		marker.textContent = currentMarker;
-		if (cell) cell.appendChild(marker);
+		cell.appendChild(marker);
 	};
 
 	const startGame = (e, dialog) => {
@@ -223,15 +217,15 @@ const Display = (function () {
 		cardGameRules.classList.add('hidden');
 		dialog.close();
 		renderBoard();
-		nameX = document.querySelector('#player__X').value;
-		nameO = document.querySelector('#player__O').value;
-		initGame(nameX, nameO);
+		inputNameX = document.querySelector('#player__X').value;
+		inputNameO = document.querySelector('#player__O').value;
+		initGame(inputNameX, inputNameO);
 		bindCellEvents();
 	};
 
 	const playAgain = () => {
-		const board = document.querySelector('#board');
-		board.remove(); // dom board
+		const domBoard = document.querySelector('#board');
+		domBoard.remove();
 
 		Gameboard.initEmptyBoard(); // for game logic board
 
@@ -243,14 +237,13 @@ const Display = (function () {
 		const status = Game.getGameStatus();
 		const winnerMarker = Game.getLastPlayer().getMarker();
 
-		// styling
 		sectionGameStatus.classList.remove('hidden');
 
 		if (status === 'win') {
 			if (winnerMarker === 'X') {
-				titleGameStatus.textContent = `🎉 ${nameX} wins! 🎉`;
+				titleGameStatus.textContent = `🎉 ${inputNameX} wins! 🎉`;
 			} else {
-				titleGameStatus.textContent = `🎉 ${nameO} wins! 🎉`;
+				titleGameStatus.textContent = `🎉 ${inputNameO} wins! 🎉`;
 			}
 		} else if (status === 'tie') {
 			titleGameStatus.textContent = `That's a tie!`;
