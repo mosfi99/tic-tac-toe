@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="halloween">
+<html lang="en" class="h-full">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,33 +7,47 @@
 		<link href="output.css" rel="stylesheet" />
 		<script src="../src/js/script.js" defer></script>
 	</head>
-	<body>
-		<header class="text-center py-5 border-b">
-			<h1 class="text-5xl">Tic Tac Toe</h1>
+	<body class="h-full flex flex-col">
+		<header
+			class="bg-base-100 text-center py-8 border-b border-primary shadow-md">
+			<span class="text-primary"></span>
+			<h1 class="text-5xl font-extrabold text-base-content">Tic Tac Toe</h1>
 		</header>
 
-		<main class="container mx-auto px-4 sm:px-10">
+		<main class="container mx-auto px-4 sm:px-10 flex-grow">
 			<!-- HOW TO PLAY CARD -->
-
 			<section
 				id="card__gameRules"
-				class="card bg-primary/10 text-neutral-content mx-auto my-10 w-full max-w-md sm:max-w-xl">
-				<div class="card-body items-center text-center space-y-4">
-					<h2 class="card-title text-3xl mb-1.5">How to Play</h2>
-					<ul class="list-disc list-inside text-[16px] text-left">
-						<li>2 players take turns placing X and O on the board.</li>
-						<li>Player X always goes first.</li>
+				class="card bg-primary/5 text-base-content mx-auto my-10 sm:my-30 w-full max-w-xl shadow-xl rounded-xl">
+				<div
+					class="card-body items-center text-center space-y-6 px-6 py-8 sm:px-10">
+					<h2 class="card-title text-base-content text-4xl font-bold mb-2">
+						How to Play
+					</h2>
+					<ul
+						class="list-disc list-inside text-left text-base leading-relaxed space-y-2">
 						<li>
-							The goal is to get 3 marks in a row (horizontally, vertically, or
-							diagonally).
+							<span class="font-semibold">2 players</span> take turns placing
+							<span class="font-bold text-primary">X</span> and
+							<span class="font-bold text-secondary">O</span> on the board.
 						</li>
 						<li>
-							If all cells are filled and no player has 3 in a row, the game
-							ends in a tie.
+							<span class="font-semibold">Player X</span> always goes first.
+						</li>
+						<li>
+							The goal is to get
+							<span class="font-semibold">3 marks in a row</span>
+							horizontally, vertically, or diagonally.
+						</li>
+						<li>
+							If all cells are filled and no one wins, the game ends in a
+							<span class="italic">tie</span>.
 						</li>
 					</ul>
-					<div class="card-actions justify-center">
-						<button id="btn__gotIt" class="btn btn-primary text-xl w-35">
+					<div class="card-actions justify-center pt-4">
+						<button
+							id="btn__gotIt"
+							class="btn btn-primary text-lg px-8 rounded-full shadow-md transition-transform duration-200 hover:scale-105">
 							Got it!
 						</button>
 					</div>
@@ -54,7 +68,7 @@
 
 					<form
 						id="form__playersNames"
-						class="space-y-4 flex flex-col items-center">
+						class="space-y-4 mt-4 flex flex-col items-center">
 						<label class="input w-50">
 							<span class="label font-bold text-primary">X</span>
 							<input
@@ -77,7 +91,7 @@
 						</label>
 						<button
 							type="submit"
-							class="btn block btn-accent px-10 smedium text-xl">
+							class="btn block btn-accent text-lg px-8 rounded-full shadow-md transition-transform duration-200 hover:scale-105">
 							Start
 						</button>
 					</form>
@@ -89,17 +103,32 @@
 			<!-- GAME STATUS CARD -->
 			<section id="section__gameStatus" class="hidden">
 				<div
-					class="card bg-neutral-content/10 text-neutral-content mx-auto my-10 w-full max-w-md">
+					class="card bg-primary/5 text-neutral-content mx-auto my-10 w-full max-w-md shadow-xl rounded-xl">
 					<div class="card-body items-center text-center">
-						<h2 id="title__gameStatus" class="card-title text-2xl mb-1.5"></h2>
+						<h2
+							id="title__gameStatus"
+							class="card-title text-base-content text-2xl mb-1.5"></h2>
 						<div class="card-actions justify-center">
-							<button id="btn__playAgain" class="btn btn-accent text-xl w-35">
-								Play Again
+							<button
+								id="btn__playAgain"
+								class="btn btn-accent text-lg px-8 rounded-full shadow-md transition-transform duration-200 hover:scale-105">
+								PLAY AGAIN
 							</button>
 						</div>
 					</div>
 				</div>
 			</section>
 		</main>
+		<footer
+			class="footer sm:footer-horizontal footer-center bg-base-300 text-base-content p-4">
+			<aside>
+				<p>
+					Made by
+					<a class="link link-primary" href="https://github.com/mosfi99"
+						>@mosfi99</a
+					>
+				</p>
+			</aside>
+		</footer>
 	</body>
 </html>
