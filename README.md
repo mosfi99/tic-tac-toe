@@ -20,10 +20,12 @@ I also took this opportunity to go beyond the original requirements by learning 
 - **DaisyUI**
 - **Modular Design with IIFE + Factory Functions**
 
-## 📱 Mobile
+## Demo
+
+### 📱 Mobile
 
 ![Mobile Demo](./demo/mobile.gif)
 
-## 💻 Desktop
+### 💻 Desktop
 
 ![Desktop Demo](./demo/desktop.gif)
