@@ -29,3 +29,7 @@ I also took this opportunity to go beyond the original requirements by learning 
 ### 💻 Desktop (tie case)
 
 ![Desktop Demo](./demo/desktop.gif)
+
+## 🔗 Live Demo
+
+[Click here to play!](https://mosfi99.github.io/tic-tac-toe/)
