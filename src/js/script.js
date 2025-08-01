@@ -19,8 +19,9 @@ const Gameboard = (function () {
 	initEmptyBoard();
 
 	const setMarker = (row, column, marker) => {
-		// set a marker ( X or O) if the cell is empty
+		// if the cell is empty
 		if (board[row][column] === '') {
+			// set a marker ( X or O)
 			board[row][column] = marker;
 			return true;
 		} else return false;
@@ -88,7 +89,7 @@ const initGame = function (namePlayerX, namePlayerO) {
 			return false;
 		};
 
-		// checks if the board has empty spaces, if yes then it is not a tie yet, if no, it is a tie
+		// checks if the board has empty spaces, if false then it is not a tie yet, if true, it is a tie
 		const checkTie = () => {
 			for (let i = 0; i < BOARD_SIZE; i++) {
 				for (let j = 0; j < BOARD_SIZE; j++) {
@@ -123,9 +124,8 @@ const initGame = function (namePlayerX, namePlayerO) {
 				players[currentPlayerIndex].getMarker()
 			);
 
-			// checks if the player chose an already-filled cell
+			// place the marker if the cell is empty
 			if (isMarkerSet) {
-				// place the marker
 				const index = row * BOARD_SIZE + column;
 				Display.updateCell(index, players[currentPlayerIndex].getMarker());
 				lastPlayer = players[currentPlayerIndex];
@@ -160,7 +160,7 @@ const Display = (function () {
 	const titleGameStatus = document.querySelector('#title__gameStatus');
 	const btnPlayAgain = document.querySelector('#btn__playAgain');
 
-	// players
+	// players input
 	let inputNameX, inputNameO;
 
 	const renderBoard = () => {
@@ -168,7 +168,6 @@ const Display = (function () {
 		const domBoard = document.createElement('div');
 
 		domBoard.id = 'board';
-	
 
 		domBoard.className = `grid grid-cols-3 gap-2 max-w-xs sm:max-w-md mx-auto mt-6`;
 
@@ -176,7 +175,8 @@ const Display = (function () {
 		for (let i = 0; i < BOARD_SIZE * BOARD_SIZE; i++) {
 			const cell = document.createElement('div');
 			cell.dataset.cell = i;
-			cell.className = 'cell aspect-square w-full bg-base-200 rounded flex items-center justify-center text-4xl sm:text-6xl cursor-pointer hover:bg-base-300';
+			cell.className =
+				'cell aspect-square w-full bg-base-200 rounded flex items-center justify-center text-4xl sm:text-6xl cursor-pointer hover:bg-base-300';
 			domBoard.appendChild(cell);
 		}
 		sectionBoard.appendChild(domBoard);
