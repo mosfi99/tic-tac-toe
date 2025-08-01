@@ -22,10 +22,10 @@ I also took this opportunity to go beyond the original requirements by learning 
 
 ## Demo
 
-### 📱 Mobile
+### 📱 Mobile (win case)
 
 ![Mobile Demo](./demo/mobile.gif)
 
-### 💻 Desktop
+### 💻 Desktop (tie case)
 
 ![Desktop Demo](./demo/desktop.gif)
